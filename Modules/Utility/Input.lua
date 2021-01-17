@@ -1,3 +1,10 @@
+--[[ TODO: Replace this entire thing;
+    clean the code, 
+    have support for multiple inputs of same type bound, 
+    remove redundant boolean branching, 
+    disabling input should not need a table literal of the same used to add the input
+--]]
+
 local boundInputs = {}; do
 	local CheckInput = function(input, focusedGui)
 		local foundInput = boundInputs[input.KeyCode == Enum.KeyCode.Unknown and input.UserInputType or input.KeyCode]
