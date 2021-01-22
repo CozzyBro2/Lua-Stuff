@@ -1,27 +1,38 @@
---[[ TODO: Replace this entire thing;
+--[[ TODO (DONE): Replace this entire thing;
     clean the code, 
     have support for multiple inputs of same type bound, 
     remove redundant boolean branching, 
     disabling input should not need a table literal of the same used to add the input
 --]]
 
-local boundInputs = {}; do
-	local CheckInput = function(input, focusedGui)
+local boundInputs, bindList = {}, {} do
+	local HandleInput = function(input, isFocused)
 		local foundInput = boundInputs[input.KeyCode == Enum.KeyCode.Unknown and input.UserInputType or input.KeyCode]
 
 		if foundInput then
-			foundInput(input, focusedGui)
+			for _, callback in ipairs(foundInput) do
+				callback(input, isFocused)
+			end
 		end
 	end
-
+	
 	local inputService = game:GetService("UserInputService")
-
-	inputService.InputBegan:Connect(CheckInput)
-	inputService.InputEnded:Connect(CheckInput)
+	
+	inputService.InputChanged:Connect(HandleInput)
+	inputService.InputBegan:Connect(HandleInput)
+	inputService.InputEnded:Connect(HandleInput)
 end
 
-return function(inputs, callback, shouldEnable) 
-	for _, inputType in ipairs(inputs) do
-		boundInputs[inputType] = shouldEnable and callback
+return function(callback, inputs)
+	if not bindList[callback] then bindList[callback] = inputs end
+	
+	local inputList = inputs or bindList[callback]
+	
+	for _, input in ipairs(inputList) do
+		if inputs and boundInputs[input] then
+			table.insert(boundInputs[input], callback); return
+		end
+		
+		boundInputs[input] = inputs and {callback}
 	end
 end
