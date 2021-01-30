@@ -1,31 +1,25 @@
-local tweenService = game:GetService("TweenService")
 local activeTweens = {}
 
-local function AuxillaryLerp(self, target, alpha)
-	return self + (target - self) * alpha
+local ToSineValue = function(origin, goal, alpha)
+	return origin + (goal - origin) * -(math.cos(3.14 * alpha) - 1)
 end
 
-table.insert(require(game:GetService("ReplicatedStorage").Modules.FrameRoutines).RenderStepped, 2, function(step)
-	for position, tweenInfo in pairs(activeTweens) do
-	        -- TODO: Make this much faster
-		local alpha = tweenInfo.Alpha
-		tweenInfo.Alpha = alpha + step / tweenInfo.Duration
-
-		tweenInfo.Instance[tweenInfo.Target] = tweenInfo.Lerp(
-			tweenInfo.StartPoint, 
-			tweenInfo.Goal, 
-			tweenService:GetValue(alpha, tweenInfo.Easing, tweenInfo.Direction)
-		)
-
-		if 1 < alpha then activeTweens[position] = nil end
+game:GetService("RunService").RenderStepped:Connect(function(elaspedDelta)
+	for position, tweenParams in ipairs(activeTweens) do
+		tweenParams.Progress += elaspedDelta / tweenParams.Duration
+		local currentProgress = tweenParams.Progress
+		
+		tweenParams.Whom[tweenParams.What] = tweenParams.Interpolate(tweenParams.PointFirst, tweenParams.Where, currentProgress)
+		
+		if currentProgress > 1 then
+			table.remove(activeTweens, position) -- pop current
+		end
 	end
 end)
 
-return function(config)
-	local target = config.Instance[config.Target]
-	config.Lerp = type(target) == "userdata" and target.Lerp or AuxillaryLerp
-	config.StartPoint = target
-	config.Alpha = 0
+return function(tweenParams)
+	tweenParams.Interpolate = tweenParams.Whom[tweenParams.What].Lerp or ToSineValue
+	tweenParams.Progress = 0
 	
-	activeTweens[#activeTweens + 1] = config
+	table.insert(activeTweens, tweenParams)
 end
