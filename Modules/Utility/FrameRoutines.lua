@@ -1,11 +1,12 @@
-local routineMap = {RenderStepped = {}, Heartbeat = {}}
+local frameRoutines = {RenderStepped = "TBD"}; frameRoutines.RenderStepped = game.Players.LocalPlayer and {}
+local runService = game:GetService("RunService")
 
-local startIteration = function(stepType)
-	game:GetService("RunService")[stepType]:Connect(function(delta)
-		for _, subroutine in ipairs(stepType) do 
-			subroutine(delta)
+for frameStep, callbacks in pairs(frameRoutines) do
+	runService[frameStep]:Connect(function(deltaTime)
+		for _, callback in ipairs(callbacks) do
+			callback(deltaTime)
 		end
-	end); stepType = routineMap[stepType]
+	end); frameStep = nil
 end
 
-return game.Players.LocalPlayer and startIteration("RenderStepped") or startIteration("Heartbeat") or routineMap
+return frameRoutines
