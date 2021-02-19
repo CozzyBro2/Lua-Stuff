@@ -1,27 +1,31 @@
-
 local storeService = game:GetService("DataStoreService")
 
 local Get = function(self)
 	local status, result = xpcall(self.Store.UpdateAsync, self.OnError, self.Store, self.Key, function(gotData)
-		if gotData then
-			if os.clock() - gotData[1] < self.LockTime then
-				gotData.S[1] = os.clock()
-			end
-			
-			return gotData
+		gotData = gotData or {
+			[1] = os.clock() - self.SessionLockTimeout
+		}
+		
+		if self.SessionLockTimeout < os.clock() - gotData[1] then
+			gotData[1] = os.clock()
+		
+			print("allowed"); return gotData
 		end
 		
-		gotData = {}
+		self.Locked = true
 	end)
 end
 
 return {
 	Save = function(self)
-		if self.Locked then return end
+		if self.Locked then return warn("locked") end
 		
-		self.Store:SetAsync(self.Key, self.Data) 
+		local dataToSave = self.Data
+		dataToSave[1] = 0
+		
+		self.Store:SetAsync(self.Key, dataToSave)
 	end,
-	
+
 	NewStore = function(storeParams)
 		local createdStore = {
 			Store = storeService:GetDataStore(storeParams.StoreName),
@@ -29,9 +33,9 @@ return {
 			OnError = storeParams.OnError or warn,
 			Key = storeParams.APIKey,
 		}
-		
-		createdStore.Data = Get(createdStore)
-		
+
+		createdStore.Data = select(2, Get(createdStore))
+
 		return createdStore
 	end
 }
