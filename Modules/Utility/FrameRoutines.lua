@@ -1,12 +1,13 @@
-local frameRoutines = {RenderStepped = "TBD"}; frameRoutines.RenderStepped = game.Players.LocalPlayer and {}
-local runService = game:GetService("RunService")
+local frameRoutines = {RenderStepped = game.Players.LocalPlayer and {}, Heartbeat = {}}
 
-for frameStep, callbacks in pairs(frameRoutines) do
-	runService[frameStep]:Connect(function(deltaTime)
-		for _, callback in ipairs(callbacks) do
-			callback(deltaTime)
-		end
-	end); frameStep = nil
+for routineType, routines in pairs(frameRoutines) do
+    game:GetService("RunService")[routineType]:Connect(function(deltaTime)
+        for _, routine in ipairs(routines) do
+            routine(deltaTime)
+        end
+    end)
+    
+    routineType = nil
 end
 
 return frameRoutines
