@@ -1,4 +1,4 @@
-local frameRoutines = {RenderStepped = game.Players.LocalPlayer and {}, Heartbeat = {}}
+local frameRoutines = {PreSimulation = {}}
 
 for routineType, routines in pairs(frameRoutines) do
     game:GetService("RunService")[routineType]:Connect(function(...)
@@ -6,7 +6,7 @@ for routineType, routines in pairs(frameRoutines) do
             routine(...)
         end
     end)
-    
+
     routineType = nil
 end
 
