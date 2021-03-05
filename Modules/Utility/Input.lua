@@ -1,8 +1,5 @@
---[[ TODO (DONE): Replace this entire thing;
-    clean the code, 
-    have support for multiple inputs of same type bound, 
-    remove redundant boolean branching, 
-    disabling input should not need a table literal of the same used to add the input
+--[[ TODO:
+     Stop returning a function, remove the do end, remove the dumb variables, etc.
 --]]
 
 local boundInputs, bindList = {}, {} do
