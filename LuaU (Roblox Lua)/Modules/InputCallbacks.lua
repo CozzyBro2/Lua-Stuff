@@ -1,12 +1,12 @@
 local inputBinds = {}
 
-local HandleInput = function(inputObject) 
+local HandleInput = function(inputObject, focusingdGui) 
     local keyCode = inputObject.KeyCode
     local boundInput = inputBinds[keyCode == Enum.KeyCode.Unknown and inputObject.UserInputType or keyCode]
 
     if boundInput then
         for _, callback in ipairs(boundInput.Callbacks) do
-            callback(inputObject)
+            callback(inputObject, focusingGui)
         end
     end
 end
