@@ -1,2 +1,2 @@
 # Lua-Stuff
-The stuff I make in 5.4 / JIT / LuaU
+The stuff I make in LuaU / JIT / 5.4
