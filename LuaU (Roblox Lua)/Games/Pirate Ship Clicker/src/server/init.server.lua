@@ -20,8 +20,6 @@ players.PlayerRemoving:Connect(function(player)
     dataHolder[player] = nil
 end)
 
-if game:GetService("RunService"):IsStudio() then return end
-
 game:BindToClose(function()
     for _, player in ipairs(players:GetPlayers()) do
         local playerData = dataHolder[player]
