@@ -1,0 +1,26 @@
+{
+  "name": "Pirate Ship Clicker",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "Common": {
+        "$path": "src/shared"
+      }
+    },
+
+    "ServerScriptService": {
+      "Server": {
+        "$path": "src/server"
+      }
+    },
+
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "PlayerScriptsLoader": {
+          "$path": "src/client"
+        }
+      }
+    }
+  }
+}
