@@ -1,20 +1,31 @@
 local inputBinds = {}
 
-local HandleInput = function(inputObject, focusingdGui) 
-    local keyCode = inputObject.KeyCode
-    local boundInput = inputBinds[keyCode == Enum.KeyCode.Unknown and inputObject.UserInputType or keyCode]
+local inputCallback = function(input, GPE)
+    local keyCode = input.KeyCode
+    local inputBind = inputBinds[keyCode == Enum.KeyCode.Unknown and input.UserInputType or keyCode] 
 
-    if boundInput then
-        for _, callback in ipairs(boundInput.Callbacks) do
-            callback(inputObject, focusingGui)
+    if inputBind then
+        for _, callback in ipairs(inputBind) do
+            callback(input, GPE)
         end
     end
 end
 
 local inputService = game:GetService("UserInputService")
+inputService.InputBegan:Connect(inputCallback)
+inputService.InputEnded:Connect(inputCallback)
+inputService.InputBegan:Connect(inputCallback)
 
-inputService.InputChanged:Connect(HandleInput)
-inputService.InputBegan:Connect(HandleInput)
-inputService.InputEnded:Connect(HandleInput)
+return function (inputsToCallbacks)
+    for inputType, callback in pairs(inputsToCallbacks) do
+        local currentBind = inputBinds[inputType]
 
-return inputBinds
+        if callback and currentBind then
+            table.insert(currentBind, callback)
+
+            return
+        end
+
+        inputBinds[inputType] = callback and {callback}
+    end
+end
