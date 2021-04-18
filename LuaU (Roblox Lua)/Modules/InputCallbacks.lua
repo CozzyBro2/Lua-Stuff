@@ -12,9 +12,9 @@ local inputCallback = function(input, GPE)
 end
 
 local inputService = game:GetService("UserInputService")
+inputService.InputChanged:Connect(inputCallback)
 inputService.InputBegan:Connect(inputCallback)
 inputService.InputEnded:Connect(inputCallback)
-inputService.InputBegan:Connect(inputCallback)
 
 return function (inputsToCallbacks)
     for inputType, callback in pairs(inputsToCallbacks) do
