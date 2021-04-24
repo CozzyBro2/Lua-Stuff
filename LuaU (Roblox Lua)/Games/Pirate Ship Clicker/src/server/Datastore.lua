@@ -8,7 +8,7 @@ return {
             local currentTimestamp = DateTime.now().UnixTimestamp
 
             if isLocked and currentTimestamp - isLocked < 18000 then
-                player:Kick("Session Locked. please rejoin in a couple minutes")
+                player:Kick("Session Locked. please rejoin in 5 minutes")
 
                 return
             end
@@ -19,7 +19,7 @@ return {
         local state, returned = pcall(playerDatastore.GetAsync, playerDatastore, userId)
 
         if not state then
-            player:Kick("Datastore Error: "..returned.." Please rejoin in a few minutes, your data has NOT been lost.")
+            player:Kick("Datastore Error, please rejoin in a few minutes. (your data has not been lost) Error: "..returned)
 
             returned = {Immutable = true}
         end

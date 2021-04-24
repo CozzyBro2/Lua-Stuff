@@ -2,7 +2,7 @@ local frameRoutines = require(game:GetService("ReplicatedStorage"):WaitForChild(
 local tweenCount = 0
 local toTween = {}
 
-local StepTweens = function (tweenStep)
+local function StepTweens (tweenStep)
     for tweenObject, tweenParams in pairs(toTween) do
         tweenParams.TweenAlpha += tweenStep / tweenParams.TweenLength
         local tweenAlpha = math.min(tweenParams.TweenAlpha, 1)

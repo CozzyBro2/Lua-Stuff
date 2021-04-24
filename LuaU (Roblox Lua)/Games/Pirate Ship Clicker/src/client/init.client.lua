@@ -12,12 +12,15 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local contentProvider = game:GetService("ContentProvider")
 local guiFolder = replicatedStorage.Assets.GUI
 
-coroutine.resume(coroutine.create(contentProvider.PreloadAsync), contentProvider, replicatedStorage:WaitForChild("Assets"):GetChildren())
-game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
+coroutine.resume(coroutine.create(function() 
+    contentProvider:PreloadAsync(replicatedStorage.Assets:GetChildren())
 
-replicatedStorage:WaitForChild("Remotes").Parent = nil
-guiFolder.Parent = player.PlayerGui
+    guiFolder.Parent = player.PlayerGui
 
-for guiName, class in pairs(require(script.Gui).GuiToClasses) do
-    class.Start(guiFolder[guiName])
-end
+    for guiName, class in pairs(require(script.Gui).GuiToClasses) do
+        class.Start(guiFolder[guiName])
+    end
+end))
+
+require(replicatedStorage.Common.Data).Data = replicatedStorage.Remotes.RequestData:InvokeServer()
+game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
