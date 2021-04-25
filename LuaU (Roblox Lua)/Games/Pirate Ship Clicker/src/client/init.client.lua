@@ -17,8 +17,10 @@ coroutine.resume(coroutine.create(function()
 
     guiFolder.Parent = player.PlayerGui
 
-    for guiName, class in pairs(require(script.Gui).GuiToClasses) do
-        class.Start(guiFolder[guiName])
+    for guiName, classes in pairs(require(script.Gui).GuiToClasses) do
+        for _, class in ipairs(classes) do
+            class.Start(guiFolder:FindFirstChild(guiName, true))
+        end
     end
 end))
 

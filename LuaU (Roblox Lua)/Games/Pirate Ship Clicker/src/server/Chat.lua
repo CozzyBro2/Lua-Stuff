@@ -1,6 +1,5 @@
 local chatRemote = game:GetService("ReplicatedStorage").Remotes.PushMessage
 local textService = game:GetService("TextService")
-local players = game:GetService("Players")
 local chatCooldowns = {}
 
 chatRemote.OnServerEvent:Connect(function(player, chatMessage)
@@ -8,10 +7,11 @@ chatRemote.OnServerEvent:Connect(function(player, chatMessage)
     chatCooldowns[player] = os.clock()
 
     local filterResult = textService:FilterStringAsync(chatMessage, player.UserId)
+    local sendersName = player.Name
 
-    for _, recipient in ipairs(players:GetPlayers()) do
+    for recipient in pairs(chatCooldowns) do
         coroutine.resume(coroutine.create(function()
-            chatRemote:FireClient(recipient, player.Name, filterResult:GetChatForUserAsync(recipient.UserId))
+            chatRemote:FireClient(recipient, sendersName, filterResult:GetChatForUserAsync(recipient.UserId))
         end))
     end
 end)
