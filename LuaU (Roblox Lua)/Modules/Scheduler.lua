@@ -4,11 +4,11 @@ local ScheduleFuncs = {}
 
 game:GetService("RunService").Stepped:Connect(function()
 	for CallbackInfo, CallDate in pairs(Scheduled) do
-		if os.clock() < CallDate then return end
+		if os.clock() < CallDate then continue end
 
 		local Call = CallbackInfo.Call
 		ScheduleFuncs.Remove(Call)
-
+		
 		Call(unpack(CallbackInfo.Args))
 	end
 end)
