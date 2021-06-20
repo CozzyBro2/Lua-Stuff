@@ -2,7 +2,7 @@ local CallbackMap = {} -- { Callback = CallbackInfo }
 local Scheduled = {} -- { CallbackInfo = os.clock }
 local ScheduleFuncs = {}
 
-game:GetService("RunService").Stepped:Connect(function()
+game:GetService("RunService").Heartbeat:Connect(function()
 	for CallbackInfo, CallDate in pairs(Scheduled) do
 		if os.clock() < CallDate then continue end
 
