@@ -1,26 +1,26 @@
 local CallbackMap = {} -- { Callback = CallbackInfo }
-local Scheduled = {} -- { CallbackInfo = os.clock }
+local Scheduled = {} -- { Info = os.clock }
 local Scheduler = {}
 
 game:GetService("RunService").Heartbeat:Connect(function()
-	for CallbackInfo, CallDate in pairs(Scheduled) do
-		if os.clock() < CallDate then continue end
+	for Info, Date in pairs(Scheduled) do
+		if os.clock() < Date then continue end
 
-		local Call = CallbackInfo.Call
+		local Call = Info.Call
+		
 		Scheduler.Remove(Call)
-
-		Call(unpack(CallbackInfo.Args))
+		Call(unpack(Info.Args))
 	end
 end)
 
 function Scheduler.Add(Time, Callback, ...)
-	local CallbackInfo = {
+	local Info = {
 		Call = Callback, 
 		Args = {...}
 	}
 
-	Scheduled[CallbackInfo] = (os.clock() + Time) - 0.005
-	CallbackMap[Callback] = CallbackInfo
+	Scheduled[Info] = (os.clock() + Time) - 0.005
+	CallbackMap[Callback] = Info
 end
 
 function Scheduler.Remove(Callback)
