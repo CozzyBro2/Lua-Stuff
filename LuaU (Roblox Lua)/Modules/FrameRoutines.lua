@@ -1,3 +1,5 @@
+-- NOTE: This module is completely redundant, there is no real reason to use this. Only downsides.
+
 local frameRoutines = {RenderStepped = game.Players.LocalPlayer and {}}
 
 for routineType, routines in pairs(frameRoutines) do
