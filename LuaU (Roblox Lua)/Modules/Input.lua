@@ -1,3 +1,5 @@
+-- NOTE: This module is redundant as of the deferred signal update, and impractical to begin with.
+
 local inputBinds = {}
 
 local function HandleInput(input, guiFocused)
