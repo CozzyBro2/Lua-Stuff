@@ -1,4 +1,4 @@
-local CallbackMap = {} -- { Callback = CallbackInfo }
+local CallbackMap = {} -- { Callback = Info }
 local Scheduled = {} -- { Info = os.clock }
 local Scheduler = {}
 
@@ -7,7 +7,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
 		if os.clock() < Date then continue end
 
 		local Call = Info.Call
-		
+
 		Scheduler.Remove(Call)
 		Call(unpack(Info.Args))
 	end
