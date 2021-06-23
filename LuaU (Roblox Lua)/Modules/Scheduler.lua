@@ -1,33 +1,30 @@
-local CallbackMap = {} -- { Callback = Info }
-local Scheduled = {} -- { Info = os.clock }
-local Scheduler = {}
+local Scheduled = {} -- { Callback = Info }
+local Scheduler = {Jitter = 0.005}
 
 game:GetService("RunService").Heartbeat:Connect(function()
-	for Info, Date in pairs(Scheduled) do
-		if os.clock() < Date then continue end
-
-		local Call = Info.Call
+	for Call, Info in pairs(Scheduled) do
+		if os.clock() < Info.Date then continue end
 
 		Scheduler.Remove(Call)
+
 		Call(unpack(Info.Args))
 	end
 end)
 
 function Scheduler.Add(Time, Callback, ...)
+	assert(Time, "Invalid argument #1 'Time'"); assert(Callback, "Invalid argument #2 'Callback'")
+	
 	local Info = {
+		Date = (os.clock() + Time) - Scheduler.Jitter,
 		Call = Callback, 
 		Args = {...}
 	}
 
-	Scheduled[Info] = (os.clock() + Time) - 0.005
-	CallbackMap[Callback] = Info
+	Scheduled[Callback] = Info
 end
 
 function Scheduler.Remove(Callback)
-	local ToRemove = CallbackMap[Callback]
-
-	Scheduled[ToRemove] = nil
-	CallbackMap[Callback] = nil
+	Scheduled[Callback] = nil
 end
 
 return Scheduler
