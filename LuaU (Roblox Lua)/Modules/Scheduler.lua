@@ -1,3 +1,5 @@
+-- NOTE: will not be further maintained. New updates to this module will go on the seperate repository I made for this.
+
 local Scheduled = {} -- { Callback = Info }
 local Scheduler = {Jitter = 0.005}
 
