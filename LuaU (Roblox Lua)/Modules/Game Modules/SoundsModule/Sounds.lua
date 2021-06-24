@@ -1,6 +1,8 @@
 --[[
 	NOTE: This module is an auxillary table for the 'SoundModule' under this same folder. 
 	This module is a table that maps material enums to sound strings, which later is used to reference sound objects.
+
+	Name: Sounds.lua
 --]]
 
 local Materials = Enum.Material
