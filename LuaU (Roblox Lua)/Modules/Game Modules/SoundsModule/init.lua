@@ -14,7 +14,7 @@ return {
 			local MappedMaterial = Sounds[Humanoid.FloorMaterial] 
 			local NewSound = MappedMaterial and SoundPlayer:FindFirstChild(MappedMaterial)
 
-			if NewSound then -- Change to the new sound, but keep it's properties
+			if NewSound then
 				NewSound.TimePosition = Sound.TimePosition
 				NewSound.PlaybackSpeed = Sound.PlaybackSpeed
 
@@ -22,7 +22,7 @@ return {
 			end
 
 			Sound.Playing = false
-			Sound = NewSound or Sound -- Stop playing the old sound, and make the oldsound the newsound for next time.
+			Sound = NewSound or Sound
 		end)
 
 		Humanoid.Running:Connect(function(Speed)
