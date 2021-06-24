@@ -1,3 +1,7 @@
+--[[
+	Name: SoundsModule.lua
+--]]
+
 local Sounds = require(script.Sounds) --// {Enum.Materials.SomeMaterial = "SomeSound"}
 
 return {
