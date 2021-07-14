@@ -37,7 +37,7 @@ function Service:Post(...)
 	local ResumePoints = self._ResumePoints
 
 	for Point in pairs(ResumePoints) do
-		local Resumed = typeof(Point) == "function" and Service._Call(Point, ...) or Service._Resume(Point, ...)
+		local Resumed = type(Point) == "function" and Service._Call(Point, ...) or Service._Resume(Point, ...)
 
 		ResumePoints[Point] = nil
 	end
