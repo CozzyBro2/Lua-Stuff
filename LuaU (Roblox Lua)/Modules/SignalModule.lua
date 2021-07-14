@@ -8,7 +8,7 @@ function Service.new(Parameters)
 	local Subscription = setmetatable({
 
 		_WrapCalls 		= Parameters.WrapCalls,
-		_ResumePoints   = {},
+		_ResumePoints   	= {},
 		_CanListen 		= true,
 		Topic 			= Parameters.Topic,
 
