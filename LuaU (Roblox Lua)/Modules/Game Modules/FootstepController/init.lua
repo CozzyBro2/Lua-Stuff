@@ -5,7 +5,7 @@
 local Module = {}
 Module.__index = Module
 
-local StepMap = require(script.StepMap)
+local StepMap = require(script.StepMap) -- Modules/GameModules/FootstepController/StepMap.lua
 
 function Module.new(Character)
 	local self do
