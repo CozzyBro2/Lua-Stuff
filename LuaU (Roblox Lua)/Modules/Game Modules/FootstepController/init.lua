@@ -19,7 +19,7 @@ function Module.new(Character)
 			_Run	  = Instance.new("Sound"),
 			Jump 	  = Character:GetAttribute("Jump"),
 			Fall	  = Character:GetAttribute("Fall"),
-			Land	 = Character:GetAttribute("Land"),
+			Land	  = Character:GetAttribute("Land"),
 
 			Connections = {
 				_Running = Humanoid.Running:Connect(function(...)
@@ -62,7 +62,7 @@ end
 
 function Module:MaterialChanged(MaterialEnum)
 	local MaterialName  = StepMap[MaterialEnum] 
-	local MaterialSound = MaterialName and self._Player:FindFirstChild(MaterialName)
+	local Sound 	    = MaterialName and self._Player:FindFirstChild(MaterialName)
 	local IsPlaying     = self._Run.Playing
 	
 	self._Run.Playing = false
