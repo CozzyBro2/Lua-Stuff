@@ -62,13 +62,13 @@ end
 
 function Module:MaterialChanged(MaterialEnum)
 	local MaterialName  = StepMap[MaterialEnum] 
-	local Sound 	    = MaterialName and self._Player:FindFirstChild(MaterialName)
+	local Sound 	    = ( MaterialName and self._Player:FindFirstChild(MaterialName) )
 	local IsPlaying     = self._Run.Playing
 	
 	self._Run.Playing = false
 	
-	if MaterialSound then
-		self._Run = MaterialSound
+	if Sound then
+		self._Run = Sound
 		
 		self._Run.Playing = IsPlaying
 	end
