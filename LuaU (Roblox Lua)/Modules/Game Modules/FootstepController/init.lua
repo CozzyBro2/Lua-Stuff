@@ -35,14 +35,14 @@ function Module.new(Character)
 				end),
 				
 				_FloorMaterial = Humanoid:GetPropertyChangedSignal("FloorMaterial"):Connect(function()
-					self:MaterialChanged(self._Humanoid.FloorMaterial.Name)
+					self:MaterialChanged(self._Humanoid.FloorMaterial)
 				end)
 			}
 
 		}, Module)
 	end
 	
-	self:MaterialChanged(self._Humanoid.FloorMaterial.Name)
+	self:MaterialChanged(self._Humanoid.FloorMaterial)
 	
 	return self
 end
@@ -60,9 +60,9 @@ function Module:FreeFalling(IsFalling)
 	
 end
 
-function Module:MaterialChanged(Name)
-	local Material   	= StepMap[Name] 
-	local MaterialSound = Material and self._Player:FindFirstChild(Material)
+function Module:MaterialChanged(MaterialEnum)
+	local MaterialName  = StepMap[MaterialEnum] 
+	local MaterialSound = MaterialName and self._Player:FindFirstChild(MaterialName)
 	local IsPlaying     = self._Run.Playing
 	
 	self._Run.Playing = false
