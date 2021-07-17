@@ -2,27 +2,23 @@ local Service = {Subscriptions = {}}
 Service.__index = Service
 
 function Service.new(Parameters)
-	assert(Parameters, "Null parameters")
-	assert(Parameters.Topic, "Null topic")
+	assert(type(Parameters) == "table", "Expected parameters table")
+	assert(type(Parameters.Topic) == "string", "Expected string topic parameter")
 
 	local Subscription = setmetatable({
 
 		_WrapCalls 		= Parameters.WrapCalls,
-		_ResumePoints   	= {},
+		_ResumePoints   = {},
 		_CanListen 		= true,
 		Topic 			= Parameters.Topic,
 
 	}, Service)
 
-	Service.Subscriptions[Subscription.Topic] = Subscription
-	
 	return Subscription
 end
 
 function Service:Connect(Callback)
 	assert(type(Callback) == "function", "Expected type 'function'")
-	
-	Callback = self._WrapCalls and coroutine.wrap(Callback) or Callback
 	
 	self._ResumePoints[Callback] = {}
 end
@@ -45,8 +41,12 @@ end
 
 function Service:Revoke()
 	self._CanListen = false
+	
+	self = nil
+end
 
-	Service.Subscriptions[self.Topic] = nil
+function Service:Destroy()
+	
 end
 
 function Service:_Resume(Thread, ...)
@@ -54,8 +54,10 @@ function Service:_Resume(Thread, ...)
 end
 
 function Service:_Call(Callback, ...)
+	Callback = self._WrapCalls and coroutine.wrap(Callback) or Callback
+   
 	Callback(...)
-
+	
 	return Callback
 end
 
