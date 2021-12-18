@@ -15,7 +15,7 @@ local jobs = {
 
 }
 
-local performer = require(script.Parent.JobUtil).new(jobs)
+local performer = require(client.Parent.JobUtil).new(jobs)
 
 function module.Start(...)
 	performer:PerformJobs("Start", ...)
