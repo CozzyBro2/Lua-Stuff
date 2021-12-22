@@ -19,7 +19,7 @@ function module:PerformJobs(contentType, worker, isLocal)
 		local content = require(job)
 
 		-- NOTE: Jobs are executed in parallel --
-		task.spawn(content[contentType], worker)
+		task.spawn(content[contentType], worker, isLocal)
 	end
 end
 
